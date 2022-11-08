@@ -205,27 +205,7 @@ sap.ui.define(
         }
         this.oMP.toggle(oEvent.getSource());
       },
-
-      handleRequiredField: function (oInput) {
-        let sTarget =
-          oInput.getBindingContext().getPath() +
-          "/" +
-          oInput.getBindingPath("value");
-        //logic to remove message from traget
-        this.removeMessageFromTarget(sTarget);
-        if (!oInput.getValue()) {
-          this._MessageManager.addMessages(
-            new Message({
-              message: "A mandatory field is required",
-              type: MessageType.Error,
-              additionalText: oInput.getLabels()[0].getText(),
-              target: sTarget,
-              processor: this.getView().getModel(),
-            })
-          );
-        }
-      },
-
+      
       removeMessageFromTarget: function (sTarget) {
         this._MessageManager
           .getMessageModel()
@@ -239,7 +219,25 @@ sap.ui.define(
           );
       },
 
-      checkInputConstraints: function (group, oInput) {
+      handleRequiredField: function (oInput) {
+        let sTarget =
+          oInput.getBindingContext().getPath() + "/" + oInput.getBindingPath("value");
+        //logic to remove message from traget
+        this.removeMessageFromTarget(sTarget);
+        if (!oInput.getValue()) {
+          this._MessageManager.addMessages(
+            new Message({
+              message: " *Campo Requerido",
+              type: MessageType.Error,
+              additionalText: oInput.getLabels()[0].getText(),
+              target: sTarget,
+              processor: this.getView().getModel(),
+            })
+          );
+        }
+      },
+
+      checkInputConstraints: function (oInput) {
         var oBinding = oInput.getBinding("value"),
           sValueState = "None",
           message,
@@ -248,20 +246,19 @@ sap.ui.define(
           sTarget = oInput.getBindingContext().getPath() +"/" +oInput.getBindingPath("value");
         this.removeMessageFromTarget(sTarget);
 
-        switch (group) {
-          case "GR1":
-            message = "Invalid email";
+        switch (oInput.getName()) {
+          case "nameIpt":
+            message = "Ingrese un Nombre Válido";
             type = MessageType.Error;
-            description =
-              "The value of the email field should be a valid email adress.";
+            description = "Debe cargar al menos 2 Caracteres";
             sValueState = "Error";
             break;
-          case "GR2":
-            message = "The value should not exceed 40";
-            type = MessageType.Warning;
+          case "mail":
+            message = "Ingrese un Mail Correcto";
+            type = MessageType.Error;
             description =
               "The value of the working hours field should not exceed 40 hours.";
-            sValueState = "Warning";
+            sValueState = "Error";
             break;
           default:
             break;
@@ -287,10 +284,11 @@ sap.ui.define(
         var oInput = oEvent.getSource();
         if (oInput.getRequired()) {
           this.handleRequiredField(oInput);
+        } else {
+          this.checkInputConstraints(oInput);
         }
-        if (oInput.getLabels()[0].getText() === "Standard Weekly Hours") {
-          this.checkInputConstraints("GR2", oInput);
-        }
+        //if (oInput.getLabels()[0].getText() === "Standard Weekly Hours") {
+       // }
       },
 
       saveData: function () {
@@ -310,8 +308,8 @@ sap.ui.define(
           .getContent()[13];
         oButton.setVisible(true);
         this.handleRequiredField(oNameInput);
-        this.checkInputConstraints("GR1", oEmailInput);
-        this.checkInputConstraints("GR2", iWeeklyHours);
+        this.checkInputConstraints(oEmailInput);
+        this.checkInputConstraints(iWeeklyHours);
         this.oMP.getBinding("items").attachChange(
           function (oEvent) {
             this.oMP.navigateBack();

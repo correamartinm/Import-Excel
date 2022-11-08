@@ -14,7 +14,11 @@
                                     <core:Title text="Information" />
 
                                     <Label text="Name" />
-                                    <Input required="true" change="onChange" value="{ path: 'name', type : 'sap.ui.model.type.String'}" />
+                                    <Input name="nameIpt" change="onChange" 
+                                           value="{ path: 'name', 
+                                                    type : 'sap.ui.model.type.String', 
+                                                    constraints: { minLength : 2  }
+                                                     }" />
 
                                     <Label text="Street/No." />
                                     <Input value="{street/name}" />
@@ -41,7 +45,7 @@
                                     </Select>
                                     <core:Title text="Contact" />
                                     <Label text="Email" />
-                                    <Input change="onChange" value="{ path : 'email',
+                                    <Input name="mail" change="onChange" value="{ path : 'email',
                                                                         type : 'sap.ui.model.type.String',
                                                                         constraints : { search : '^\\w+[\\-+\\.]*\\@[a-zA-Z]+.[a-zA-Z]+'
                                                                         } }" />
