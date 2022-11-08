@@ -245,10 +245,7 @@ sap.ui.define(
           message,
           type,
           description,
-          sTarget =
-            oInput.getBindingContext().getPath() +
-            "/" +
-            oInput.getBindingPath("value");
+          sTarget = oInput.getBindingContext().getPath() +"/" +oInput.getBindingPath("value");
         this.removeMessageFromTarget(sTarget);
 
         switch (group) {
