@@ -19,14 +19,23 @@ sap.ui.define(
    * @param {typeof sap.ui.core.library } library
    * @param {typeof sap.ui.core.message.Message } Message
    */
-  function ( Controller, JSONModel, Core, MessagePopover, Element, MessageItem, library, Message ) {
+  function (
+    Controller,
+    JSONModel,
+    Core,
+    MessagePopover,
+    Element,
+    MessageItem,
+    library,
+    Message
+  ) {
     var MessageType = library.MessageType;
 
     return Controller.extend("test.validaciones.controller.View1", {
-      
-        onInit: function () {
+      onInit: function () {
         const oModel = new JSONModel();
         oModel.loadData("./localService/mockdata/CustomerModel.json");
+
         this.oView = this.getView();
         this._MessageManager = Core.getMessageManager();
         //Clear the old messages
@@ -85,20 +94,22 @@ sap.ui.define(
       // the group name is generated based on the current layout
       // specific for each use case
       getGroupName: function (sControlId) {
-        let oControl = Element.registry.get(sControlId);
+        if (typeof sControlId === "string") {
+          let oControl = Element.registry.get(sControlId);
 
-        if (oControl) {
-          let sFormSubtitle = oControl
-            .getParent()
-            .getParent()
-            .getTitle()
-            .getText();
-          let sFormTitle = oControl
-            .getParent()
-            .getParent()
-            .getParent()
-            .getTitle();
-          return sFormTitle + ", " + sFormSubtitle;
+          if (oControl) {
+            let sFormSubtitle = oControl
+              .getParent()
+              .getParent()
+              .getTitle()
+              .getText();
+            let sFormTitle = oControl
+              .getParent()
+              .getParent()
+              .getParent()
+              .getTitle();
+            return sFormTitle + ", " + sFormSubtitle;
+          }
         }
       },
 
@@ -205,7 +216,7 @@ sap.ui.define(
         }
         this.oMP.toggle(oEvent.getSource());
       },
-      
+
       removeMessageFromTarget: function (sTarget) {
         this._MessageManager
           .getMessageModel()
@@ -220,14 +231,13 @@ sap.ui.define(
       },
 
       handleRequiredField: function (oInput) {
-        let sTarget =
-          oInput.getBindingContext().getPath() + "/" + oInput.getBindingPath("value");
+        let sTarget = oInput.getBindingContext().getPath() + "/" + oInput.getBindingPath("value");
         //logic to remove message from traget
         this.removeMessageFromTarget(sTarget);
         if (!oInput.getValue()) {
           this._MessageManager.addMessages(
             new Message({
-              message: " *Campo Requerido",
+              message: " Campo requerido",
               type: MessageType.Error,
               additionalText: oInput.getLabels()[0].getText(),
               target: sTarget,
@@ -243,7 +253,8 @@ sap.ui.define(
           message,
           type,
           description,
-          sTarget = oInput.getBindingContext().getPath() +"/" +oInput.getBindingPath("value");
+          sTarget = oInput.getBindingContext().getPath() + "/" + oInput.getBindingPath("value");
+
         this.removeMessageFromTarget(sTarget);
 
         switch (oInput.getName()) {
@@ -253,11 +264,17 @@ sap.ui.define(
             description = "Debe cargar al menos 2 Caracteres";
             sValueState = "Error";
             break;
+            case "horasIpt":
+              message = "Valores permitidos entre 1 y 40";
+              type = MessageType.Error;
+              description = "Valores permitidos entre 1 y 40";
+              sValueState = "Error";
+              break;  
           case "mail":
-            message = "Ingrese un Mail Correcto";
+            message = "Ingrese un email correcto";
             type = MessageType.Error;
             description =
-              "The value of the working hours field should not exceed 40 hours.";
+              "Debe ingresar un correo electronico válido";
             sValueState = "Error";
             break;
           default:
@@ -288,26 +305,21 @@ sap.ui.define(
           this.checkInputConstraints(oInput);
         }
         //if (oInput.getLabels()[0].getText() === "Standard Weekly Hours") {
-       // }
+        // }
       },
 
       saveData: function () {
         const oView = this.getView();
         let oButton = oView.byId("messagePopover");
-        let oNameInput = oView
-          .byId("formContainerPersonal")
-          .getItems()[0]
-          .getContent()[2];
-        let oEmailInput = this.oView
-          .byId("formContainerPersonal")
-          .getItems()[0]
-          .getContent()[12];
-        let iWeeklyHours = this.oView
-          .byId("formContainerEmployment")
-          .getItems()[0]
-          .getContent()[13];
+
+        let oNameInput    = oView.byId("formContainerPersonal").getItems()[0].getContent()[2];
+        let oEmailInput   = oView.byId("formContainerPersonal").getItems()[0].getContent()[12];
+        let iWeeklyHours  = oView.byId("formContainerEmployment").getItems()[0].getContent()[13];
+
         oButton.setVisible(true);
+        
         this.handleRequiredField(oNameInput);
+        // this.checkInputConstraints(oNameInput);
         this.checkInputConstraints(oEmailInput);
         this.checkInputConstraints(iWeeklyHours);
         this.oMP.getBinding("items").attachChange(
@@ -318,14 +330,9 @@ sap.ui.define(
             oButton.setText(this.mpSeverityMessages());
           }.bind(this)
         );
-        setTimeout(
-          function () {
-            this.oMP.openBy(oButton);
-          }.bind(this),
-          100
-        );
+        
+        setTimeout( function () { this.oMP.openBy(oButton) }.bind(this), 100 );
       },
-
     });
   }
 );

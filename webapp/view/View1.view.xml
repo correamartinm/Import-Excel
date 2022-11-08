@@ -9,15 +9,14 @@
                 <Page id="employeePage" title="{i18n>title}">
                     <content>
                         <VBox id="formContainerPersonal" class="sapUiSmallmargin" items="{ path : '/forms' }">
-                            <f:SimpleForm id="simpleFormPersonal" editable="true" layout="ColumnLayout" title="Personal" columnsM="2" columnsL="2" columnsXL="2">
+                            <f:SimpleForm id="simpleFormPersonal" editable="true" layout="ColumnLayout" title="Personal" columnsM="1" columnsL="1" columnsXL="1">
                                 <f:content>
                                     <core:Title text="Information" />
 
                                     <Label text="Name" />
-                                    <Input name="nameIpt" change="onChange" 
+                                    <Input name="nameIpt" change="onChange" required="true"
                                            value="{ path: 'name', 
-                                                    type : 'sap.ui.model.type.String', 
-                                                    constraints: { minLength : 2  }
+                                                    type : 'sap.ui.model.type.String'
                                                      }" />
 
                                     <Label text="Street/No." />
@@ -60,7 +59,7 @@
                             </f:SimpleForm>
                         </VBox>
                         <VBox id="formContainerEmployment" class="sapUiSmallmargin" items="{/employment}">
-                            <f:SimpleForm id="simpleFormEmployment" editable="true" layout="ColumnLayout" title="Employment" columnsM="2" columnsL="2" columnsXL="2">
+                            <f:SimpleForm id="simpleFormEmployment" editable="true" layout="ColumnLayout" title="Employment" columnsM="1" columnsL="1" columnsXL="1">
                                 <f:content>
                                     <core:Title text="Position" />
                                     <Label text="Job Classification" />
@@ -75,7 +74,7 @@
                                     <Label text="FTE" />
                                     <Input value="{fte}" />
                                     <Label text="Standard Weekly Hours" />
-                                    <Input change="onChange" value="{ path : 'weeklyHours',
+                                    <Input name="horasIpt" change="onChange" value="{ path : 'weeklyHours',
                                                                       type : 'sap.ui.model.type.Integer',
                                                                       constraints : { maximum : 40 }
                                                                     }" />
