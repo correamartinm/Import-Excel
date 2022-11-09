@@ -19,16 +19,7 @@ sap.ui.define(
    * @param {typeof sap.ui.core.library } library
    * @param {typeof sap.ui.core.message.Message } Message
    */
-  function (
-    Controller,
-    JSONModel,
-    Core,
-    MessagePopover,
-    Element,
-    MessageItem,
-    library,
-    Message
-  ) {
+  function ( Controller, JSONModel, Core, MessagePopover, Element, MessageItem, library, Message ) {
     var MessageType = library.MessageType;
 
     return Controller.extend("test.validaciones.controller.View1", {
@@ -130,17 +121,10 @@ sap.ui.define(
               sIcon = "sap-icon://message-error";
               break;
             case "Warning":
-              sIcon =
-                sIcon !== "sap-icon://message-error"
-                  ? "sap-icon://message-warning"
-                  : sIcon;
+              sIcon = sIcon !== "sap-icon://message-error" ? "sap-icon://message-warning" : sIcon;
               break;
             case "Success":
-              sIcon =
-                sIcon !== "sap-icon://message-error" &&
-                sIcon !== "sap-icon://message-warning"
-                  ? "sap-icon://message-success"
-                  : sIcon;
+              sIcon = sIcon !== "sap-icon://message-error" && sIcon !== "sap-icon://message-warning" ? "sap-icon://message-success" : sIcon;
               break;
             default:
               sIcon = !sIcon ? "sap-icon://message-information" : sIcon;
@@ -161,20 +145,13 @@ sap.ui.define(
               sHighestSeverity = "Negative";
               break;
             case "Warning":
-              sHighestSeverity =
-                sHighestSeverity !== "Negative" ? "Critical" : sHighestSeverity;
+              sHighestSeverity = sHighestSeverity !== "Negative" ? "Critical" : sHighestSeverity;
               break;
             case "Success":
-              sHighestSeverity =
-                sHighestSeverity !== "Negative" &&
-                sHighestSeverity !== "Critical"
-                  ? "Success"
-                  : sHighestSeverity;
+              sHighestSeverity = sHighestSeverity !== "Negative" && sHighestSeverity !== "Critical" ? "Success" : sHighestSeverity;
               break;
             default:
-              sHighestSeverity = !sHighestSeverity
-                ? "Neutral"
-                : sHighestSeverity;
+              sHighestSeverity = !sHighestSeverity ? "Neutral" : sHighestSeverity;
               break;
           }
         });
@@ -195,9 +172,7 @@ sap.ui.define(
             sHighestSeverityMessageType = "Success";
             break;
           default:
-            sHighestSeverityMessageType = !sHighestSeverityMessageType
-              ? "Information"
-              : sHighestSeverityMessageType;
+            sHighestSeverityMessageType = !sHighestSeverityMessageType ? "Information" : sHighestSeverityMessageType;
             break;
         }
         return;
@@ -319,7 +294,6 @@ sap.ui.define(
         oButton.setVisible(true);
         
         this.handleRequiredField(oNameInput);
-        // this.checkInputConstraints(oNameInput);
         this.checkInputConstraints(oEmailInput);
         this.checkInputConstraints(iWeeklyHours);
         this.oMP.getBinding("items").attachChange(
