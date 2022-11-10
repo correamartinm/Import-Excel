@@ -3,6 +3,10 @@
 		{
 			"name": "validaciones",
 			"path": "."
+		},
+		{
+			"name": "zexcelimport",
+			"path": "D:/CodigoFuente/Trabajos/zexcelimport"
 		}
 	]
 }
